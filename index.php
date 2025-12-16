@@ -1,39 +1,24 @@
 <?php
-// Start the session
-session_start();
+include 'classes/memory.php';
 
-// Initialize the task list if not set
-if (!isset($_SESSION['tasks'])) {
-    $_SESSION['tasks'] = [];
-}
+$memory = FactoryMemory::createMemory();
 
 // Handle adding a new task
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task'])) {
     $task = trim($_POST['task']);
-    if ($task !== '') {
-        $_SESSION['tasks'][] = [
-            'text' => htmlspecialchars($task),
-            'completed' => false
-        ];
-    }
+    $memory->add_task($task);
 }
 
 // Handle toggling task completion
 if (isset($_POST['toggle'])) {
     $index = (int) $_POST['toggle'];
-    if (isset($_SESSION['tasks'][$index])) {
-        $_SESSION['tasks'][$index]['completed'] =
-            !$_SESSION['tasks'][$index]['completed'];
-    }
+    $memory->toggle_task($index);
 }
 
 // Handle deleting a task
 if (isset($_GET['delete'])) {
     $deleteIndex = (int) $_GET['delete'];
-    if (isset($_SESSION['tasks'][$deleteIndex])) {
-        unset($_SESSION['tasks'][$deleteIndex]);
-        $_SESSION['tasks'] = array_values($_SESSION['tasks']); // reindex array
-    }
+    $memory->delete_task($deleteIndex);
 }
 
 ?>
@@ -55,10 +40,10 @@ if (isset($_GET['delete'])) {
 
 
 <ul>
-    <?php if (empty($_SESSION['tasks'])): ?>
+    <?php if ($memory->is_empty()): ?>
         <li>No tasks added yet.</li>
     <?php else: ?>
-        <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
+        <?php foreach ($memory->get_list() as $index => $task): ?>
             <li>
                 <!-- Checkbox toggle form -->
                 <form method="POST" style="display:inline">
