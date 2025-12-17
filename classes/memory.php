@@ -5,11 +5,13 @@
     public function add_task($task);
     public function toggle_task($index);
     public function delete_task($deleteIndex);
+    public function is_empty();
+    public function get_list();
 
  }
 
 
- class SessionMemory implements Imemory {
+ class SessionMemory implements IMemory {
 
     public function __construct() { 
         session_start();
@@ -56,11 +58,12 @@ class FactoryMemory {
 
     protected static $instance = null;
 
-    public static function createMemory(): IMemory {
+    public static function getMemory(): IMemory {
         if (self::$instance === null) {
             self::$instance = new SessionMemory();
         }
         return self::$instance;
+        
     }
 
  }
