@@ -39,5 +39,4 @@ class Route
         header("Location: /");
         exit;
     }
-
 }

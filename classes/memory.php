@@ -1,26 +1,29 @@
 <?php
 
- interface IMemory {
+interface IMemory
+{
 
     public function add_task($task);
     public function toggle_task($index);
     public function delete_task($deleteIndex);
     public function is_empty();
     public function get_list();
+}
 
- }
 
+class SessionMemory implements IMemory
+{
 
- class SessionMemory implements IMemory {
-
-    public function __construct() { 
+    public function __construct()
+    {
         session_start();
-        if (!isset($_SESSION['tasks'])) { 
-            $_SESSION['tasks'] = []; 
-        } 
+        if (!isset($_SESSION['tasks'])) {
+            $_SESSION['tasks'] = [];
+        }
     }
 
-    public function add_task($task) {
+    public function add_task($task)
+    {
         if ($task !== '') {
             $_SESSION['tasks'][] = [
                 'text' => htmlspecialchars($task),
@@ -29,41 +32,44 @@
         }
     }
 
-    public function toggle_task($index) {
+    public function toggle_task($index)
+    {
         if (isset($_SESSION['tasks'][$index])) {
             $_SESSION['tasks'][$index]['completed'] =
                 !$_SESSION['tasks'][$index]['completed'];
         }
     }
 
-    public function delete_task($deleteIndex) {
+    public function delete_task($deleteIndex)
+    {
         if (isset($_SESSION['tasks'][$deleteIndex])) {
             unset($_SESSION['tasks'][$deleteIndex]);
             $_SESSION['tasks'] = array_values($_SESSION['tasks']);
         }
     }
 
-    public function is_empty() {
+    public function is_empty()
+    {
         return empty($_SESSION['tasks']);
     }
 
-    public function get_list() {
+    public function get_list()
+    {
         return $_SESSION['tasks'];
     }
+}
 
- }
 
-
-class FactoryMemory {
+class FactoryMemory
+{
 
     protected static $instance = null;
 
-    public static function getMemory(): IMemory {
+    public static function getMemory(): IMemory
+    {
         if (self::$instance === null) {
             self::$instance = new SessionMemory();
         }
         return self::$instance;
-        
     }
-
- }
+}
