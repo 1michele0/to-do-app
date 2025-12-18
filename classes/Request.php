@@ -2,52 +2,31 @@
 
 class Request
 {
-    public static function executeRequest()
+    public static function crud($base_url, $controller)
     {
-        self::addTask();
-        self::toggleTask();
-        self::deleteTask();
-        self::showMainView();
+        self::add($base_url, $controller);
+        self::update($base_url, $controller);
+        self::delete($base_url, $controller);
+        self::index($base_url, $controller);
     }
 
-
-    public static function addTask()
+    public static function add(string $base_url, string $controller)
     {
-        Route::post('/', function () {
-            if (isset($_POST['task'])) {
-                $task = trim($_POST['task']);
-                FactoryMemory::getMemory()->add_task($task);
-                Route::redirect();
-            }
-        });
+        Route::post($base_url, [$controller, 'add']);
     }
 
-    public static function toggleTask()
+    public static function update(string $base_url, string $controller)
     {
-        Route::post('/', function () {
-            if (isset($_POST['toggle'])) {
-                $index = (int) $_POST['toggle'];
-                FactoryMemory::getMemory()->toggle_task($index);
-                Route::redirect();
-            }
-        });
+        Route::post($base_url, [$controller, 'update']);
     }
 
-    public static function deleteTask()
+    public static function delete(string $base_url, string $controller)
     {
-        Route::get('/', function () {
-            if (isset($_GET['delete'])) {
-                $deleteIndex = (int) $_GET['delete'];
-                FactoryMemory::getMemory()->delete_task($deleteIndex);
-                Route::redirect();
-            }
-        });
+        Route::get($base_url, [$controller, 'delete']);
     }
 
-    public static function showMainView()
+    public static function index(string $base_url, string $controller)
     {
-        Route::get('/', function () {
-            include 'view/Main.php';
-        });
+        Route::get($base_url, "$controller::index");
     }
 }
