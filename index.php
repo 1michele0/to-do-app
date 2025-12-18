@@ -5,4 +5,4 @@ include 'classes/Request.php';
 include 'classes/IController.php';
 include 'classes/TaskController.php';
 
-Request::crud(base_url: '/', controller: 'TaskController');
+Route::crud('tasks', TaskController::class);

@@ -4,39 +4,43 @@ class Route
 {
     protected static function route($method, $url, callable $callback)
     {
-        if ($_SERVER['REQUEST_METHOD'] === $method) {
-            // Strip query string from URI
-            $requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            if ($requestPath === $url) {
-                $callback();
-            }
+        if (Request::isMatch($method, $url)) {
+            $callback();
         }
+    }
+
+    public static function crud($base_url, $controller)
+    {
+        self::post($base_url, [$controller, 'add']);
+        self::post($base_url, [$controller, 'update']);
+        self::get($base_url, [$controller, 'delete']);
+        self::get($base_url, [$controller, 'index']);
     }
 
 
     public static function get($url, $callback)
     {
-        self::route('GET', $url, $callback);
+        self::route(Request::GET_METHOD, $url, $callback);
     }
 
     public static function post($url, $callback)
     {
-        self::route('POST', $url, $callback);
+        self::route(Request::POST_METHOD, $url, $callback);
     }
 
     public static function put($url, $callback)
     {
-        self::route('PUT', $url, $callback);
+        self::route(Request::PUT_METHOD, $url, $callback);
     }
 
     public static function delete($url, $callback)
     {
-        self::route('DELETE', $url, $callback);
+        self::route(Request::DELETE_METHOD, $url, $callback);
     }
 
-    public static function redirect()
+    public static function redirect($url='/')
     {
-        header("Location: /");
+        header("Location: $url");
         exit;
     }
 }

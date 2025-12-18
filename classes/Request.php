@@ -2,31 +2,24 @@
 
 class Request
 {
-    public static function crud($base_url, $controller)
+    const GET_METHOD = 'GET';
+    const POST_METHOD = 'POST';
+    const DELETE_METHOD = 'DELETE';
+    const PUT_METHOD = 'PUT';
+
+
+    public static function getMethod()
     {
-        self::add($base_url, $controller);
-        self::update($base_url, $controller);
-        self::delete($base_url, $controller);
-        self::index($base_url, $controller);
+        return $_SERVER['REQUEST_METHOD'];
     }
 
-    public static function add(string $base_url, string $controller)
+    public static function getPath()
     {
-        Route::post($base_url, [$controller, 'add']);
+        return $_GET['path'];
     }
 
-    public static function update(string $base_url, string $controller)
+    public static function isMatch($method, $url)
     {
-        Route::post($base_url, [$controller, 'update']);
-    }
-
-    public static function delete(string $base_url, string $controller)
-    {
-        Route::get($base_url, [$controller, 'delete']);
-    }
-
-    public static function index(string $base_url, string $controller)
-    {
-        Route::get($base_url, "$controller::index");
+        return self::getMethod() === $method && self::getPath() === $url;
     }
 }
