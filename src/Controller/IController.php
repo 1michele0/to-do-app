@@ -1,5 +1,7 @@
 <?php
 
+namespace Michele00\ToDoApp\Controller;
+
 interface IController
 {
     public static function add();

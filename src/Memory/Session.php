@@ -1,15 +1,6 @@
 <?php
 
-interface IMemory
-{
-
-    public function add_task($task);
-    public function toggle_task($index);
-    public function delete_task($deleteIndex);
-    public function is_empty();
-    public function get_list();
-}
-
+namespace Michele00\ToDoApp\Memory;
 
 class SessionMemory implements IMemory
 {
@@ -56,20 +47,5 @@ class SessionMemory implements IMemory
     public function get_list()
     {
         return $_SESSION['tasks'];
-    }
-}
-
-
-class FactoryMemory
-{
-
-    protected static $instance = null;
-
-    public static function getMemory(): IMemory
-    {
-        if (self::$instance === null) {
-            self::$instance = new SessionMemory();
-        }
-        return self::$instance;
     }
 }

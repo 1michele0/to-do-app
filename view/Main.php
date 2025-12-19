@@ -14,12 +14,14 @@
         <button type="submit">Add Task</button>
     </form>
 
-
+<!-- Ricordo che devo modificare la riga 20 e 24, ma non come -->
     <ul>
-        <?php if (FactoryMemory::getMemory()->is_empty()): ?>
+        <?php
+        if (FactoryMemory::getMemory()->is_empty()): ?>
             <li>No tasks added yet.</li>
         <?php else: ?>
-            <?php foreach (FactoryMemory::getMemory()->get_list() as $index => $task): ?>
+            <?php
+            foreach (FactoryMemory::getMemory()->get_list() as $index => $task): ?>
                 <li>
                     <!-- Checkbox toggle form -->
                     <form method="POST" style="display:inline">

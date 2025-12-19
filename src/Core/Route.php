@@ -1,5 +1,7 @@
 <?php
 
+namespace Michele00\ToDoApp\Core;
+
 class Route
 {
     protected static function route($method, $url, callable $callback)

@@ -1,5 +1,7 @@
 <?php
 
+namespace Michele00\ToDoApp\Core;
+
 class Request
 {
     const GET_METHOD = 'GET';

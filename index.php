@@ -1,8 +1,7 @@
 <?php
-include_once 'classes/Memory.php';
-include 'classes/Route.php';
-include 'classes/Request.php';
-include 'classes/IController.php';
-include 'classes/TaskController.php';
+require __DIR__ . '/vendor/autoload.php';
 
-Route::crud('tasks', TaskController::class);
+use Michele00\ToDoApp\Core\Route;
+use Michele00\ToDoApp\Controller\TaskController;
+
+Route::crud(TaskController::STORAGE_KEY, TaskController::class);
