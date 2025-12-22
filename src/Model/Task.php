@@ -3,8 +3,8 @@
 namespace Michele00\ToDoApp\Model;
 
 use Michele00\ToDoApp\Controller\TaskController;
-use Michele00\ToDoApp\Memory\FactoryMemory;
 use Michele00\ToDoApp\Core\Route;
+use Michele00\ToDoApp\Memory\FactoryMemory;
 
 class Task implements IModel
 {
@@ -17,25 +17,27 @@ class Task implements IModel
         $this->completed = $completed;
     }
 
-    public static function store($text)
+    public static function store($data)
     {
-        $task = new Task($text);
-        FactoryMemory::getMemory()->add($task, TaskController::STORAGE_KEY);
+        $task = new self($data);
+        $task->save();
+
+        return $task;
     }
 
-    public static function update()
+    public function update()
     {
         if (isset($_POST['toggle'])) {
-            $index = (int) $_POST['toggle'];
+            $index = (int)$_POST['toggle'];
             FactoryMemory::getMemory()->update($index, TaskController::STORAGE_KEY);
             Route::redirect(TaskController::STORAGE_KEY);
         }
     }
 
-    public static function destroy()
+    public function destroy()
     {
         if (isset($_GET['delete'])) {
-            $deleteIndex = (int) $_GET['delete'];
+            $deleteIndex = (int)$_GET['delete'];
             FactoryMemory::getMemory()->delete($deleteIndex, TaskController::STORAGE_KEY);
             Route::redirect(TaskController::STORAGE_KEY);
         }
@@ -46,5 +48,13 @@ class Task implements IModel
         $is_empty = FactoryMemory::getMemory()->is_empty(TaskController::STORAGE_KEY);
         $tasks = FactoryMemory::getMemory()->get_list(TaskController::STORAGE_KEY);
         include 'view/Main.php';
+    }
+
+    public function save()
+    {
+        FactoryMemory::getMemory()->add([
+            "text" => $this->text,
+            "completed" => $this->completed,
+        ], TaskController::STORAGE_KEY);
     }
 }

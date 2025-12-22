@@ -24,4 +24,18 @@ class Request
     {
         return self::getMethod() === $method && self::getPath() === $url;
     }
+
+    public static function getData($key=null)
+    {
+        if($key !== null){
+            return $_REQUEST[$key];
+        }
+
+        return $_REQUEST;
+    }
+
+    public static function hasKey($key)
+    {
+        return isset($_REQUEST[$key]);
+    }
 }
