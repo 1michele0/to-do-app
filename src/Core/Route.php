@@ -13,9 +13,9 @@ class Route
 
     public static function crud($base_url, $controller)
     {
-        self::post($base_url, [$controller, 'add']);
+        self::post($base_url, [$controller, 'store']);
         self::post($base_url, [$controller, 'update']);
-        self::get($base_url, [$controller, 'delete']);
+        self::get($base_url, [$controller, 'destroy']);
         self::get($base_url, [$controller, 'index']);
     }
 
