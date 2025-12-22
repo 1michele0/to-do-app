@@ -1,0 +1,16 @@
+{
+    "name": "michele00/to-do-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Michele00\\ToDoApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Michele",
+            "email": "michele.pelullo00@gmail.com"
+        }
+    ],
+    "require": {}
+}
