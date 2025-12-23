@@ -44,7 +44,7 @@ class Task implements IModel
                 ]);
     }
 
-    public static function destroy($key, $index)
+    public function destroy($key, $index)
     {
         FactoryMemory::getMemory()->delete($key, $index);
     }
@@ -54,5 +54,14 @@ class Task implements IModel
         $is_empty = FactoryMemory::getMemory()->is_empty($key);
         $tasks = FactoryMemory::getMemory()->get_list($key);
         include 'view/Main.php';
+    }
+
+    public static function getCurrentObject($index)
+    {
+        $tasks = FactoryMemory::getMemory()->get_list(TaskController::STORAGE_KEY);
+        $taskData = $tasks[$index];
+        $task = new Task($taskData["text"], $taskData["completed"]);
+
+        return $task;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Michele00\ToDoApp\Controller;
 
-use Michele00\ToDoApp\Memory\FactoryMemory;
 use Michele00\ToDoApp\Core\Route;
 use Michele00\ToDoApp\Core\Request;
 use Michele00\ToDoApp\Model\Task;
@@ -26,29 +25,18 @@ class TaskController implements IController
     {
         if (Request::hasKey('toggle')) {
             $index = (int) Request::getData('toggle');
-
-            $tasks = FactoryMemory::getMemory()->get_list(self::STORAGE_KEY);
-
-            if (!isset($tasks[$index])) {
-                Route::redirect(self::STORAGE_KEY);
-            }
-
-            $taskData = $tasks[$index];
-            $task = new Task($taskData["text"], $taskData["completed"]);
-
+            $task = Task::getCurrentObject($index);
             $task->update($index);
-
             Route::redirect(self::STORAGE_KEY);
         }
     }
-
-
 
     public static function delete()
     {
         if (Request::hasKey('delete')) {
             $deleteIndex = (int) Request::getData('delete');
-            Task::destroy(self::STORAGE_KEY, $deleteIndex);
+            $task = Task::getCurrentObject($deleteIndex);
+            $task->destroy(self::STORAGE_KEY, $deleteIndex);
             Route::redirect(self::STORAGE_KEY);
         }
     }
