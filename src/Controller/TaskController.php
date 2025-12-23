@@ -4,6 +4,8 @@ namespace Michele00\ToDoApp\Controller;
 
 use Michele00\ToDoApp\Memory\FactoryMemory;
 use Michele00\ToDoApp\Core\Route;
+use Michele00\ToDoApp\Core\Request;
+use Michele00\ToDoApp\Model\Task;
 
 class TaskController implements IController
 {
@@ -11,10 +13,12 @@ class TaskController implements IController
 
     public static function add()
     {
-        if (isset($_POST['task'])) {
-            $task = trim($_POST['task']);
-            FactoryMemory::getMemory()->add_task($task);
-            Route::redirect(self::STORAGE_KEY);
+        if (Request::hasKey('task')) {
+            $data = trim(Request::getData('task'));
+            if ($data !== ''){
+                Task::store($data);
+                Route::redirect(self::STORAGE_KEY);
+            }
         }
     }
 
@@ -29,15 +33,15 @@ class TaskController implements IController
 
     public static function delete()
     {
-        if (isset($_GET['delete'])) {
-            $deleteIndex = (int) $_GET['delete'];
-            FactoryMemory::getMemory()->delete_task($deleteIndex);
+        if (Request::hasKey('delete')) {
+            $deleteIndex = (int) Request::getData('delete');
+            Task::destroy(self::STORAGE_KEY, $deleteIndex);
             Route::redirect(self::STORAGE_KEY);
         }
     }
 
     public static function index()
     {
-        include 'view/Main.php';
+        Task::index(self::STORAGE_KEY);
     }
 }

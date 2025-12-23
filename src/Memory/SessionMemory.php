@@ -13,14 +13,9 @@ class SessionMemory implements IMemory
         }
     }
 
-    public function add_task($task)
+    public function add($data, $key)
     {
-        if ($task !== '') {
-            $_SESSION['tasks'][] = [
-                'text' => htmlspecialchars($task),
-                'completed' => false
-            ];
-        }
+        $_SESSION[$key][] = [$data];
     }
 
     public function toggle_task($index)
@@ -31,21 +26,21 @@ class SessionMemory implements IMemory
         }
     }
 
-    public function delete_task($deleteIndex)
+    public function delete($key, $deleteIndex)
     {
-        if (isset($_SESSION['tasks'][$deleteIndex])) {
-            unset($_SESSION['tasks'][$deleteIndex]);
-            $_SESSION['tasks'] = array_values($_SESSION['tasks']);
+        if (isset($_SESSION[$key][$deleteIndex])) {
+            unset($_SESSION[$key][$deleteIndex]);
+            $_SESSION[$key] = array_values($_SESSION[$key]);
         }
     }
 
-    public function is_empty()
+    public function is_empty($key)
     {
-        return empty($_SESSION['tasks']);
+        return empty($_SESSION[$key]);
     }
 
-    public function get_list()
+    public function get_list($key)
     {
-        return $_SESSION['tasks'];
+        return $_SESSION[$key];
     }
 }

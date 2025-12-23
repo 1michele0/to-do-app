@@ -5,9 +5,9 @@ namespace Michele00\ToDoApp\Memory;
 interface IMemory
 {
 
-    public function add_task($task);
+    public function add($data, $key);
     public function toggle_task($index);
-    public function delete_task($deleteIndex);
-    public function is_empty();
-    public function get_list();
+    public function delete($key, $index);
+    public function is_empty($key);
+    public function get_list($key);
 }
