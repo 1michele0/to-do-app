@@ -26,12 +26,12 @@
                     <!-- Checkbox toggle form -->
                     <form method="POST" style="display:inline">
                         <input type="hidden" name="toggle" value="<?= $index ?>">
-                        <input type="checkbox" onchange="this.form.submit()" <?= $task[0]['completed'] ? 'checked' : '' ?>>
+                        <input type="checkbox" onchange="this.form.submit()" <?= $task['completed'] ? 'checked' : '' ?>>
                     </form>
 
                     <!-- Task text -->
-                    <span style="<?= $task[0]['completed'] ? 'text-decoration: line-through;' : '' ?>">
-                        <?= $task[0]['text'] ?>
+                    <span style="<?= $task['completed'] ? 'text-decoration: line-through;' : '' ?>">
+                        <?= $task['text'] ?>
                     </span>
 
                     <!-- Delete -->

@@ -32,9 +32,16 @@ class Task implements IModel
         ], TaskController::STORAGE_KEY);
     }
 
-    public function update()
+    public function update($index)
     {
-        throw new \Exception('Not implemented');
+        $this->completed = !$this->completed;
+        FactoryMemory::getMemory()->update(
+            TaskController::STORAGE_KEY,
+             $index, 
+             [
+                "text" => $this->text,
+                 "completed" => $this->completed
+                ]);
     }
 
     public static function destroy($key, $index)
@@ -48,5 +55,4 @@ class Task implements IModel
         $tasks = FactoryMemory::getMemory()->get_list($key);
         include 'view/Main.php';
     }
-
 }

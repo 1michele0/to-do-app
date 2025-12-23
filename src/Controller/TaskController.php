@@ -24,12 +24,25 @@ class TaskController implements IController
 
     public static function update()
     {
-        if (isset($_POST['toggle'])) {
-            $index = (int) $_POST['toggle'];
-            FactoryMemory::getMemory()->toggle_task($index);
+        if (Request::hasKey('toggle')) {
+            $index = (int) Request::getData('toggle');
+
+            $tasks = FactoryMemory::getMemory()->get_list(self::STORAGE_KEY);
+
+            if (!isset($tasks[$index])) {
+                Route::redirect(self::STORAGE_KEY);
+            }
+
+            $taskData = $tasks[$index];
+            $task = new Task($taskData["text"], $taskData["completed"]);
+
+            $task->update($index);
+
             Route::redirect(self::STORAGE_KEY);
         }
     }
+
+
 
     public static function delete()
     {
