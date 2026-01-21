@@ -12,5 +12,7 @@
             "email": "michele.pelullo00@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-json": "*"
+    }
 }

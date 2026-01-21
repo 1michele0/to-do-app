@@ -9,6 +9,10 @@ class Request
     const DELETE_METHOD = 'DELETE';
     const PUT_METHOD = 'PUT';
 
+    public static function isMatch($method, $url)
+    {
+        return self::getMethod() === $method && self::getPath() === $url;
+    }
 
     public static function getMethod()
     {
@@ -20,22 +24,26 @@ class Request
         return $_GET['path'];
     }
 
-    public static function isMatch($method, $url)
-    {
-        return self::getMethod() === $method && self::getPath() === $url;
-    }
-
-    public static function getData($key=null)
-    {
-        if($key !== null){
-            return $_REQUEST[$key];
-        }
-
-        return $_REQUEST;
-    }
-
     public static function hasKey($key)
     {
-        return isset($_REQUEST[$key]);
+        $data = self::getData();
+        return isset($data[$key]);
+    }
+
+    public static function getData($key = null)
+    {
+        $all_data = array_merge($_REQUEST, self::getJsonInput());
+        if ($key !== null) {
+            return array_key_exists($key, $all_data) ? $all_data[$key] : null;
+        }
+
+        return $all_data;
+    }
+
+    public static function getJsonInput()
+    {
+        $post_json = file_get_contents('php://input');
+
+        return json_decode($post_json ?: "{}", true) ?? [];
     }
 }

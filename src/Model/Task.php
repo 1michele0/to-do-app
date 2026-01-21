@@ -9,6 +9,7 @@ class Task implements IModel
 {
     public $text;
     public $completed;
+    public static $table = "tasks";
 
     public function __construct($text, $completed = false)
     {
@@ -29,39 +30,38 @@ class Task implements IModel
         FactoryMemory::getMemory()->add([
             "text" => $this->text,
             "completed" => $this->completed,
-        ], TaskController::STORAGE_KEY);
+        ], self::$table);
+    }
+
+    public static function index($key)
+    {
+        $tasks = FactoryMemory::getMemory()->get_list($key);
+        return $tasks;
+    }
+
+    public static function getCurrentObject($id, $index = null)
+    {
+        $tasks = FactoryMemory::getMemory()->get_list($index ?? TaskController::STORAGE_KEY);
+        $taskData = $tasks[$id];
+        $task = new Task($taskData["text"], $taskData["completed"]);
+
+        return $task;
     }
 
     public function update($index)
     {
         $this->completed = !$this->completed;
         FactoryMemory::getMemory()->update(
-            TaskController::STORAGE_KEY,
-             $index, 
-             [
+            self::$table,
+            $index,
+            [
                 "text" => $this->text,
-                 "completed" => $this->completed
-                ]);
+                "completed" => $this->completed
+            ]);
     }
 
     public function destroy($key, $index)
     {
         FactoryMemory::getMemory()->delete($key, $index);
-    }
-
-    public static function index($key)
-    {
-        $is_empty = FactoryMemory::getMemory()->is_empty($key);
-        $tasks = FactoryMemory::getMemory()->get_list($key);
-        include 'view/Main.php';
-    }
-
-    public static function getCurrentObject($index)
-    {
-        $tasks = FactoryMemory::getMemory()->get_list(TaskController::STORAGE_KEY);
-        $taskData = $tasks[$index];
-        $task = new Task($taskData["text"], $taskData["completed"]);
-
-        return $task;
     }
 }

@@ -7,5 +7,5 @@ interface IModel {
     public function update($index);
     public function destroy($key, $index);
     public static function index($key);
-    public static function getCurrentObject($index);  
+    public static function getCurrentObject($id);
 }

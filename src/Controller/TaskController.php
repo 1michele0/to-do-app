@@ -43,6 +43,8 @@ class TaskController implements IController
 
     public static function index()
     {
-        Task::index(self::STORAGE_KEY);
+        $tasks = Task::index(self::STORAGE_KEY);
+        $is_empty = count($tasks) <= 0;
+        include 'view/Main.php';
     }
 }
